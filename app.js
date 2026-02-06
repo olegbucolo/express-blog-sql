@@ -39,7 +39,7 @@ const postArray = [
 ]
 
 app.get('/', (req, res) => {
-    res.send("Server del mio blog")
+    res.send("<h1>Server del mio blog</h1>")
 })
 
 app.get('/bacheca', (req, res) => {
