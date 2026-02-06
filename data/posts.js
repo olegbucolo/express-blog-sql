@@ -15,7 +15,7 @@ const posts = [
               Cracker di lupini
               Cracker allo zafferano
               Cracker ai semi`,
-    image: "cracker_barbabietola.jpeg",
+    image: "/imgs/posts/cracker_barbabietola.jpeg",
     tags: ["Antipasti", "Ricette vegetariane", "Ricette al forno"],
   },
   {
