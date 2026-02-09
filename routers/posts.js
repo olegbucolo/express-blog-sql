@@ -2,34 +2,18 @@ const express = require('express');
 const router = express.Router();
 
 const postsData = require('../data/posts');
+const postsController = require('../controllers/blogController');
 
-router.get('/', function (req, res) {
+router.get('/', postsController.index);
 
-    const oggettoPost = {
-        postsCount: postsData.length,
-        postsContent: postsData
-    }
-    res.json(oggettoPost);
-});
+router.get('/:id', postsController.show);
 
-router.get('/:id', function (req, res) {
-    res.send('READ the post that has id: ' + req.params.id);
-})
+router.post('/', postsController.store);
 
-router.post('/', function (req, res) {
-    res.send('CREATE a new post: ');
-});
+router.put('/:id', postsController.update);
 
-router.put('/:id', function (req, res) {
-    res.send('UPDATE completely the post that has id: ' + req.params.id);
-});
+router.patch('/:id', postsController.modify);
 
-router.patch('/:id', function (req, res) {
-    res.send('UPDATE partially the post that has id: ' + req.params.id);
-});
-
-router.delete('/:id', function (req, res) {
-    res.send('DELETE the post that has id: ' + req.params.id);
-});
+router.delete('/:id', postsController.destroy);
 
 module.exports = router;
