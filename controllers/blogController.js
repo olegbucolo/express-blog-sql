@@ -1,16 +1,28 @@
 const postsData = require('../data/posts');
 
+let alteredData = postsData;
+
 function index(req, res) {
 
     const oggettoPost = {
-        postsCount: postsData.length,
-        postsContent: postsData
+        postsCount: alteredData.length,
+        postsContent: alteredData
     }
     res.json(oggettoPost);
 }
 
 function show(req, res) {
-    res.send('READ the post that has id: ' + req.params.id);
+    const post = alteredData.find(p => p.id == req.params.id);
+    if (!post) {
+        res.status(404);
+
+        return res.json({
+            status: 404,
+            error: "Not Found",
+            message: "post non trovato"
+        })
+    }
+    res.json(post)
 }
 
 function store(req, res) {
@@ -26,7 +38,22 @@ function modify(req, res) {
 }
 
 function destroy(req, res) {
-    res.send('DELETE the post that has id: ' + req.params.id);
+
+    const post = alteredData.find(p => p.id == req.params.id);
+    if (!post) {
+        res.status(404);
+        return res.json({
+            status: 404,
+            error: "Not found",
+            message: "post non trovato"
+        })
+    }
+    res.status(204);
+
+    console.log(alteredData)
+
+    alteredData = alteredData.filter(p => p.id != req.params.id)
+    res.json(alteredData);
 }
 
 module.exports = { index, show, store, update, destroy, modify }

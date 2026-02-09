@@ -9,9 +9,9 @@ const postsRouter = require('./routers/posts');
 app.use('/posts', postsRouter);
 
 app.get('/', function (req, res) {
-    res.send(`
+        res.send(`
     <div style="font-size: 2rem;">
-      <h1>To use the API, use the following commands:</h1>
+      <h1>To use the API, see the following commands:</h1>
       <ul>
         <li>    <span style="color: green; font-size: 1rem;">GET</span>
                 localhost:3000/posts 
@@ -39,5 +39,5 @@ app.get('/', function (req, res) {
 })
 
 app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`)
+        console.log(`Server running at http://localhost:${PORT}`)
 })
