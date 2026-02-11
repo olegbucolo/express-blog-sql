@@ -12,17 +12,13 @@ function index(req, res) {
     res.json(oggettoPost);
 }
 
-function show(req, res) {
+function show(req, res, next) {
     const post = alteredPostsData.find(p => p.id == req.params.id);
-    if (!post) {
-        res.status(404);
 
-        return res.json({
-            status: 404,
-            error: "Not Found",
-            message: "post non trovato"
-        })
+    if (!post) {
+        return next();
     }
+
     console.log(alteredPostsData);
     res.json(post)
 }

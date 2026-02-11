@@ -2,6 +2,10 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
+// getting middleware 
+const notFound = require('./middleware/notFound');
+const errorsHandler = require('./middleware/errorsHandler');
+
 app.use(express.static('public'));
 app.use(express.json());
 
@@ -38,6 +42,11 @@ app.get('/', function (req, res) {
   `)
 
 })
+
+// using middleware
+app.use(notFound);
+app.use(errorsHandler);
+
 
 app.listen(PORT, () => {
         console.log(`Server running at http://localhost:${PORT}`)
