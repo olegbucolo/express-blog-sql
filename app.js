@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
+
+
 // getting middleware 
 const notFound = require('./middleware/notFound');
 const errorsHandler = require('./middleware/errorsHandler');

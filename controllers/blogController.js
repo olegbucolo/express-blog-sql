@@ -1,26 +1,48 @@
+const connection = require('../data/db');
+
 const postsData = require('../data/posts');
 
 let alteredPostsData = postsData;
 
 function index(req, res) {
 
-    const oggettoPost = {
-        postsCount: alteredPostsData.length,
-        postsContent: alteredPostsData
-    }
+    const sql = 'SELECT * FROM posts'
 
-    res.json(oggettoPost);
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: 'Database query failed' })
+        res.json(results);
+
+    })
+
 }
 
 function show(req, res, next) {
-    const post = alteredPostsData.find(p => p.id == req.params.id);
+    const id = req.params.id;
 
-    if (!post) {
-        return next();
-    }
+    const sql = `   SELECT posts.*, tags.* 
+                    FROM posts 
+                    JOIN post_tag ON posts.id = post_tag.post_id 
+                    JOIN tags ON post_tag.tag_id = tags.id 
+                    WHERE posts.id = ?`;
 
-    console.log(alteredPostsData);
-    res.json(post)
+    connection.query(sql, [id], (err, results) => {
+        if (err) return res.status(500).json({ error: 'Database query failed' })
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Post not found' });
+        }
+
+        const post = {
+            id: results[0].id,
+            title: results[0].title,
+            content: results[0].content,
+            image: results[0].image,
+            tags: results.map(row => row.label)
+        };
+
+        res.json(post);
+    })
+
 }
 
 function store(req, res) {
@@ -67,22 +89,14 @@ function modify(req, res) {
 }
 
 function destroy(req, res) {
+    const id = req.params.id;
+    const sql = 'DELETE FROM posts WHERE id = ?';
 
-    const post = alteredPostsData.find(p => p.id == req.params.id);
-    if (!post) {
-        res.status(404);
-        return res.json({
-            status: 404,
-            error: "Not found",
-            message: "post non trovato"
-        })
-    }
+    connection.query(sql, [id], (err) => {
+        if (err) return res.status(500).json({ error: 'Failed to delete post' })
+        res.sendStatus(204);
+    })
 
-    alteredPostsData = alteredPostsData.filter(p => p.id != req.params.id)
-    res.status(204);
-    console.log(alteredPostsData)
-
-    res.json(alteredPostsData);
 }
 
 module.exports = { index, show, store, update, destroy, modify }
